@@ -1,1 +1,91 @@
-= fizzy-giggle
+= Fuzzy Giggle - A Qt6 Code Editor
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Project Overview
+
+**Fuzzy Giggle** is a modern code editor implemented in **Qt6** using **QWidget** (instead of QML) to provide a lightweight, performant, and highly modular text editing experience. The editor is designed with a plugin architecture that allows dynamic loading of widgets and features through dynamic libraries (DLLs), making it extensible without recompilation of the core application.
+
+=== Key Characteristics
+
+* **Qt6 QWidget-Based**: Pure QWidget implementation for native performance and direct control over UI layout and rendering
+* **Plugin Architecture**: Dynamic library loading using `QLibrary` for decoupled widget management
+* **Modular Design**: Separation of concerns with clear interface definitions for widgets
+* **Theme Support**: Built-in light/dark mode switching via menu bar
+* **Professional UX**: Central code editor with surrounding utility widgets
+* **Code Syntax Highlighting**: Support for multiple programming language syntax highlighting
+
+== Architecture Overview
+
+=== Application Layout
+
+The application follows a classical editor layout pattern:
+
+=== Component Structure
+
+==== Main Application (Core)
+
+The main entry point creates a central widget that:
+
+* Initializes the menu bar with theme selection
+* Sets up a central splitter widget to manage layouts
+* Loads plugin widgets dynamically through the plugin manager
+* Manages application state and configuration
+* Handles theme switching (light/dark mode)
+
+==== Plugin System
+
+Each widget (except the core editor) is packaged as a plugin:
+
+* **Plugin Interface**: Abstract interface defining the contract for all plugins
+* **Plugin Manager**: Loads and manages DLLs using `QLibrary`
+* **Individual Plugins**: Editor widgets, file browsers, output panels, etc.
+
+==== Central Code Editor Widget
+
+The central editor widget is responsible for:
+
+* **Text Editing**: Content manipulation and cursor management
+* **Syntax Highlighting**: Language-aware code coloration
+* **Theme Integration**: Respects light/dark mode settings
+* **Event Handling**: Keyboard shortcuts and mouse interactions
+
+
+== Core Components
+
+=== 1. Main Window (`mainwindow.h/cpp`)
+
+**Responsibilities:**
+
+* Initialize application UI
+* Create central splitter widget
+* Setup menu bar with theme options
+* Delegate plugin loading to PluginManager
+* Handle theme switching signals
+
+**Key Classes:**
+
+```cpp
+class MainWindow : public QMainWindow {
+    Q_OBJECT
+public:
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void onThemeChanged(bool isDarkMode);
+    void onLoadPlugins();
+
+private:
+    void setupMenuBar();
+    void setupCentralWidget();
+    void applyTheme(bool isDarkMode);
+
+    QSplitter *centralSplitter;
+    CodeEditor *codeEditor;
+    PluginManager *pluginManager;
+};
+```
