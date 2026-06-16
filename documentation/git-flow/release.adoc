@@ -1,0 +1,136 @@
+= Release Guide
+:toc: left
+:toclevels: 2
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Purpose
+
+This document defines how releases are prepared for **Fuzzy Giggle**.
+It explains what a release contains, how the version number evolves, and how the final release is published through GitHub.
+
+== What A Release Contains
+
+A release is a grouped delivery of validated work for the project.
+It should contain a clear list of the implemented changes, such as:
+
+* new features
+* bug fixes
+* plugin updates
+* release-specific packaging or documentation work
+
+In practice, a release should summarize the set of feature, fix, and related changes that justify publishing a new application version.
+
+== Release Branch Workflow
+
+If release coordination needs dedicated changes, create a release issue and a release branch.
+This branch can be used for tasks such as:
+
+* version updates
+* changelog preparation
+* packaging adjustments
+* final documentation updates
+* release binary integration
+
+Recommended command:
+
+```bash
+git checkout main
+git pull -r origin main
+git checkout -b release/<release_version>
+```
+
+Release branches should stay short-lived and be merged as soon as the release work is validated. But the validation of the release branch should be done through a pull request to ensure that the work is reviewed and validated before merging.
+
+== Versioning Rules
+
+Fuzzy Giggle uses a three-part version number:
+
+```text
+<Major>.<Minor>.<Patch>
+```
+
+The version number evolves according to the type of changes included in the release.
+
+Rules:
+
+* each new release increments the `Patch` version by `1`
+* if the release contains a change in the main frame of the application, increment the `Major` version by `1`
+* if the release contains a change in one of the plugins, increment the `Minor` version by `1`
+
+For this project, the main frame refers to the core application areas such as the main window, editor, menu bar, or other central application components.
+
+When a release affects several areas, choose the version bump based on the highest-impact rule that applies.
+
+Examples:
+
+* a release with only small fixes increments `Patch`
+* a release with plugin-only changes increments `Minor`
+* a release with a main-frame change increments `Major`
+
+== GitHub Release Preparation
+
+Each release issue should produce clear release artifacts.
+When a version is delivered:
+
+* prepare the release on the GitHub Releases page
+* create a Git tag for the delivered version
+* use the GitHub release notes as the changelog for that version
+* attach the produced application binary to the GitHub release
+
+The GitHub release should be the source of truth for the delivered version. The tag, the release notes, and the binary should all point to the same published release.
+
+The GitHub release page is the public delivery page for a version of the project.
+It should gather in one place:
+
+* the version tag
+* the release title
+* the changelog or release notes
+* the binary or packaged application files for that version
+
+If the release contains several issues, the changelog should summarize the main completed items instead of duplicating every implementation detail from the pull requests.
+
+== Changelog Expectations
+
+A changelog is the summary of what changed between releases.
+Its purpose is to help contributors and users understand what was added, fixed, changed, or delivered in a specific version without reading every commit or pull request.
+
+Each release should have a changelog on the GitHub release page.
+
+The changelog should describe:
+
+* the main new features included in the release
+* the main bug fixes included in the release
+* plugin changes when they are part of the delivered version
+* important core application changes when the main frame is affected
+* any notable limitation, migration note, or manual verification point when needed
+
+The changelog should stay concise and release-oriented.
+It should summarize the delivered value of the version rather than repeat the full internal implementation history.
+
+Example:
+
+```text
+Version 1.2.3
+
+* add plugin loading feedback in the main window
+* fix theme refresh after switching between light and dark mode
+* update the file browser plugin behavior for better project navigation
+* improve release packaging for the Windows application binary
+* note that manual validation was performed on editor startup and plugin loading
+```
+
+The changelog should be written with short bullet points that are easy to read quickly and easy to scan on the GitHub release page.
+
+== Release Checklist
+
+Before publishing a release:
+
+1. Confirm the release issue is complete.
+2. Confirm the included features and fixes are validated.
+3. Update the application version.
+4. Prepare the changelog on the GitHub release page.
+5. Create the release tag.
+6. Attach the final application binary to the GitHub release.
+7. Publish the release.
