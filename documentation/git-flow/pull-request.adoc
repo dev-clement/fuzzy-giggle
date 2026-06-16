@@ -1,0 +1,145 @@
+= Pull Request Guide
+:toc: left
+:toclevels: 2
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Purpose
+
+This document defines what a pull request should look like for **Fuzzy Giggle**.
+It explains how a pull request should be presented, which validations are expected before approval, how review comments are handled, and how code quality expectations apply during review.
+
+== General Rule
+
+A pull request is the mandatory validation step before work reaches `main`.
+No implementation branch should be integrated without going through review.
+
+Each pull request should:
+
+* reference the related GitHub issue for closing purposes such as `Closes #<issue-number>`
+* explain what changed
+* explain how the change has been validated
+* mention any known limitation, follow-up item, or remaining risk when relevant
+
+== What A Pull Request Should Look Like
+
+The pull request description should be easy to read and easy to review.
+It should contain enough information for another contributor to understand the purpose of the change without reading the whole branch history first.
+
+Recommended contents:
+
+* the linked GitHub issue
+* a short summary of the change
+* the impacted project area such as a plugin, the editor, the menu bar, or another core component
+* the validation steps performed before opening the pull request
+* any known limitation or follow-up work
+
+Recommended structure:
+
+```text
+Issue:
+Closes #<issue-number>
+
+Summary:
+* <main change>
+* <main change>
+
+Impacted area:
+* <plugin or core component>
+
+Validation:
+* <test or verification performed>
+* <test or verification performed>
+
+Known limitations:
+* <optional limitation or follow-up>
+```
+
+== Validation Expectations
+
+Every pull request should demonstrate that the proposed change has been checked before review.
+The exact validation depends on the nature of the change, but the pull request must explain what was verified.
+
+Accepted validation methods include:
+
+* unit tests when automated tests exist for the impacted area
+* manual testing for UI behavior, editor interactions, plugin loading, and integration scenarios
+* build validation to confirm the application still compiles correctly
+* regression checks on the impacted features listed by the commits or the pull request description
+
+The goal is to keep the code clean by validating both correctness and regression risk, not only by checking that the code compiles.
+
+When relevant, the pull request should state:
+
+* what was tested
+* how it was tested
+* what result was observed
+* whether some checks could not be performed yet
+
+== Review Comments
+
+Review comments should help improve correctness, maintainability, readability, and consistency.
+Accepted comments on a pull request include comments about:
+
+* bugs or incorrect behavior
+* missing validation or insufficient test coverage
+* unclear logic or maintainability concerns
+* naming problems
+* code style or consistency problems
+* architectural concerns in relation to the current project structure
+* missing documentation when a behavior or workflow changes
+
+Comments should stay concrete and tied to the proposed change.
+They should explain what is wrong, unclear, or risky so the author can address the issue precisely.
+
+== Review Resolution Rule
+
+A pull request cannot be accepted while comments are still open on it.
+Every review comment should be resolved or explicitly answered before approval.
+
+If a comment leads to a code change, the update should be pushed to the same branch and the resolution should be visible in the pull request discussion.
+
+== Merge Rule
+
+Pull requests must be merged without creating a merge commit.
+The repository history should remain linear so the evolution of the project stays easy to follow.
+
+Rules:
+
+* do not use a merge commit when integrating the pull request
+* merge only after review is complete and validation is acceptable
+* keep `main` reserved for validated pull request integration only
+
+== Code And Naming Rules
+
+The project should follow shared code and naming rules.
+Those detailed rules are not fully defined yet, but pull requests are expected to respect the current direction of the codebase.
+
+Until the dedicated coding-style documentation is written, reviewers should still check for:
+
+* consistent naming inside the impacted area
+* names that clearly describe the purpose of classes, functions, variables, files, and plugins
+* consistent formatting and structure with the surrounding code
+* changes that remain aligned with the existing architecture and responsibilities
+
+This section should later be completed by a dedicated code and naming rules document.
+
+== What To Avoid
+
+To keep reviews efficient and reliable, avoid the following:
+
+* opening a pull request without an associated GitHub issue
+* mixing unrelated changes in the same pull request
+* opening a pull request without describing the validation performed
+* requesting approval while comments are still unresolved
+* merging with a merge commit
+* using the pull request to introduce silent style rewrites unrelated to the issue
+
+== Summary
+
+The pull request should show three things clearly:
+
+1. what changed
+2. how the change was validated
+3. why the change is ready to be merged without unresolved review concerns

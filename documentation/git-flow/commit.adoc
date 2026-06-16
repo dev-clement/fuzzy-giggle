@@ -1,0 +1,99 @@
+= Commit Guide
+:toc: left
+:toclevels: 2
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Purpose
+
+This document explains what a commit should look like in **Fuzzy Giggle** and on which branch commits are allowed.
+The goal is to keep the history readable, traceable to GitHub issues, and easy to validate during review.
+
+== Where Commits Are Allowed
+
+Commits must be created on working branches only.
+Allowed branches are:
+
+* `feature/FG-<issue-number>: <short-description>`
+* `fix/FG-<issue-number>: <short-description>`
+* `release/FG-<version>`
+
+Commits are forbidden on `main`.
+The `main` branch must only receive validated pull requests so the project history stays linear and review-approved.
+
+In practice:
+
+* do not commit directly on `main`
+* do not push ad-hoc fixes directly to `main`
+* prepare the work on a dedicated branch linked to a GitHub issue
+* integrate the result through a validated pull request only
+
+== How To Make A Commit
+
+Before creating a commit:
+
+1. Make sure you are on the correct working branch.
+2. Make sure the branch is linked to the GitHub issue being implemented.
+3. Keep the commit focused on one logical change.
+4. Check that the commit message documents what changed and what must be tested.
+
+Typical workflow:
+
+```bash
+git checkout feature/42-plugin-loader
+git status
+git add <file1> ... <fileN>
+git commit
+```
+
+If you are on `main`, switch to a working branch before committing.
+
+== Commit Expectations
+
+Commits should stay focused, readable, and easy to validate.
+Each commit message should contain three parts:
+
+* A title prefixed with `FG-<issue-number>: <short description>` that clearly states the purpose of the commit
+* A description written as bullet points describing what changes in the commit
+* A list of the impacted features so reviewers know what should be tested
+
+Recommended structure:
+
+```text
+FG-<issue-number>: <title>
+
+- <change made in the commit>
+- <change made in the commit>
+
+Impacted features:
+- <feature or area to test>
+- <feature or area to test>
+```
+
+== Commit Writing Rules
+
+Use the commit body to explain the change clearly.
+
+Guidelines:
+
+* keep one logical change per commit
+* make the title short and explicit
+* use the bullet-point description to explain what is changing in concrete terms
+* list every impacted feature or area that should be checked after the commit
+* avoid unrelated formatting or drive-by edits mixed into feature work
+
+If a branch becomes too broad, split the work before opening the pull request.
+
+== Relationship With Main
+
+The `main` branch is the validated branch of the project.
+It should contain only work that has already gone through review and pull request validation.
+
+To preserve a linear history:
+
+* no direct commit should be created on `main`
+* no merge commit should be added to `main`
+* `main` should advance only through validated pull requests merged with a linear strategy
+
+This means the branch where development happens is not `main`, but the dedicated feature, fix, or release branch created for the corresponding issue.
