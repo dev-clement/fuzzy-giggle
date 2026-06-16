@@ -1,0 +1,88 @@
+= Documentation Guide
+:toc: left
+:toclevels: 2
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Purpose
+
+This directory contains the project documentation for **Fuzzy Giggle**.
+The root readme explains the application at a high level. The files in this folder are intended to go further into implementation details, workflows, and contributor-facing references.
+
+Use this folder for documentation that benefits from being versioned alongside the codebase, such as:
+
+* architecture notes
+* plugin development guides
+* UI and theme conventions
+* build and packaging instructions
+* testing and debugging references
+
+== Documentation Structure
+
+The documentation is expected to stay focused and easy to scan.
+Prefer splitting content into dedicated files instead of growing a single large document.
+
+Recommended categories:
+
+* **Architecture**: overall design, subsystem boundaries, event flow, ownership rules
+* **Plugins**: plugin interface contract, loading lifecycle, expected exports, limitations
+* **Editor**: central widget behavior, syntax highlighting strategy, text model decisions
+* **UI/UX**: widget layout, theme handling, keyboard shortcuts, visual conventions
+* **Git Flow**: issue-based branching, pull request expectations, release workflow
+* **Build & Tooling**: Qt setup, compiler requirements, build commands, deployment notes
+* **Testing & Debugging**: manual test scenarios, logging, troubleshooting notes
+
+== Writing Guidelines
+
+When adding new documentation:
+
+* keep one topic per file
+* prefer concrete explanations over general descriptions
+* document behavior, constraints, and extension points
+* include code snippets only when they clarify an API or contract
+* update this index when a new long-lived document is added
+
+Recommended filename style:
+
+* `architecture/README.adoc`
+* `plugin-system/README.adoc`
+* `editor-widget/README.adoc`
+* `build-and-run/README.adoc`
+
+== Relationship With The Root Readme
+
+The root `README.adoc` should remain the entry point for the repository.
+It should answer:
+
+* what the project is
+* how it is structured
+* what the main components are
+
+This documentation folder should answer:
+
+* how a subsystem works in detail
+* how contributors extend or modify it
+* what assumptions and constraints must be preserved
+
+== Planned Documents
+
+The following documents would be natural additions as the project grows:
+
+* `architecture/architecture.adoc` for application structure and ownership boundaries
+* `plugin-system/plugin-system.adoc` for plugin contracts and loading rules
+* `editor-widget/editor-widget.adoc` for editor behavior and syntax-highlighting internals
+* `git-flow/README.adoc` for the collaborative Git and GitHub workflow
+* `themes/themes.adoc` for light/dark mode implementation details
+* `build-and-run/build-and-run.adoc` for local setup and build workflow
+
+== Maintenance
+
+Documentation should be updated when one of the following changes:
+
+* public interfaces between core components and plugins
+* project build requirements
+* UI behavior that contributors are expected to preserve
+* extension or integration workflows
+
+If a document becomes obsolete, update or remove it in the same change that alters the behavior.
