@@ -1,0 +1,216 @@
+= Git Flow
+:toc: left
+:toclevels: 2
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Purpose
+
+This document defines how contributors should use Git and GitHub for **Fuzzy Giggle**.
+The goal is to keep collaboration predictable, make review easier, and ensure that each change is traceable to a GitHub issue.
+
+== General Rule
+
+Every meaningful change should be linked to a GitHub issue.
+That includes:
+
+* new features
+* bug fixes
+* refactoring work that affects behavior or architecture
+* release preparation tasks
+
+Small documentation or typo fixes may be grouped when appropriate, but implementation work should still be tied to a tracked issue.
+
+== Branching Strategy
+
+The project can follow a simple branch model:
+
+* `main` contains stable and review-approved work
+* short-lived branches are created for each issue
+* branches should be created from the GitHub issue they implement whenever possible
+
+Recommended branch naming:
+
+* `feature/<issue-number>-<short-description>`
+* `fix/<issue-number>-<short-description>`
+* `release/<version>`
+
+Examples:
+
+* `feature/42-plugin-loader`
+* `fix/57-theme-refresh`
+* `release/0.2.0`
+
+== How To Work On A Feature
+
+When starting a feature, the expected flow is:
+
+1. Create or confirm the GitHub issue exists.
+2. Make sure the issue clearly states the goal, scope, and any important technical constraints.
+3. Split the work correctly in the issue before implementation starts:
+4. If the work belongs to a plugin, keep it scoped to that plugin DLL.
+5. If the work belongs to the core application, keep it scoped to the relevant main component such as the editor, menu bar, or another core widget.
+6. Create the branch from the GitHub issue so the branch is directly linked to the issue.
+7. Implement only the work related to that issue on the branch.
+8. Commit in small, reviewable steps.
+9. Open a pull request linked to the issue.
+10. Merge only after review and required checks pass.
+
+Typical commands:
+
+```bash
+git checkout main
+git pull -r origin main
+git checkout -b feature/42-plugin-loader
+```
+
+NOTE: Note that the git pull command uses the `-r` option to rebase the local branch on top of the remote `main` branch. This keeps the history linear and avoids unnecessary merge commits.
+
+In practice, the issue should be the source of truth for the branch. The branch name, the pull request, and the review discussion should all point back to the same GitHub issue.
+
+== Issue Scoping Rules
+
+Issues should stay focused enough that ownership is clear.
+For this project, feature and bugfix issues should be split according to the area they affect:
+
+* one issue for work related to a specific plugin DLL
+* one issue for work related to a core application area such as the editor, menu bar, or application shell
+
+This avoids broad issues that mix plugin work and core application work in the same branch.
+
+If a feature spans several independent plugins or a plugin and the core application, prefer creating separate issues unless the work is too tightly coupled to review independently.
+
+== How To Work On A Bug Fix
+
+Bug fixes follow the same structure as features:
+
+1. Open or confirm a GitHub issue for the bug.
+2. Describe the observed behavior, expected behavior, and reproduction steps.
+3. Create a dedicated bugfix branch from `main`.
+4. Keep the branch focused on one bug unless the issues are tightly coupled.
+5. Open a pull request that explains the root cause and the validation performed.
+
+Typical commands:
+
+```bash
+git checkout main
+git pull -r origin main
+git checkout -b fix/57-theme-refresh
+```
+
+== How To Prepare A Release
+
+Detailed release rules, versioning, and publication steps are documented in `release.adoc`.
+
+If release coordination needs dedicated changes, create a release issue and a release branch.
+This branch can be used for tasks such as:
+
+* version updates
+* changelog preparation
+* packaging adjustments
+* final documentation updates
+* release binary integration
+
+Recommended command:
+
+```bash
+git checkout main
+git pull -r origin main
+git checkout -b release/<release_version>
+```
+
+Release branches should stay short-lived and be merged as soon as the release work is validated.
+
+== GitHub Release Preparation
+
+Each release issue should produce clear release artifacts.
+When a version is delivered:
+
+* prepare the release in GitHub Releases
+* create a Git tag for the delivered version
+* use the GitHub release notes as the changelog for that version
+* attach the produced application binary to the GitHub release
+
+The GitHub release should be the source of truth for the delivered version. The tag, the release notes, and the binary should all point to the same published release.
+
+If the release contains several issues, the changelog should summarize the main completed items instead of duplicating every implementation detail from the pull requests.
+
+== Commit Expectations
+
+Detailed commit rules and branch restrictions are documented in `commit.adoc`.
+
+Commits should stay focused, readable, and easy to validate.
+Each commit message should contain three parts:
+
+* A title prefixed with `FG-<issue-number>: <short description>` that clearly states the purpose of the commit
+* A description written as bullet points describing what changes in the commit
+* A list of the impacted features so reviewers know what should be tested
+
+Recommended structure:
+
+```text
+FG-<issue-number>: <title>
+
+- <change made in the commit>
+- <change made in the commit>
+
+Impacted features:
+- <feature or area to test>
+- <feature or area to test>
+```
+
+Guidelines:
+
+* keep one logical change per commit
+* make the title short and explicit
+* use the bullet-point description to explain what is changing in concrete terms
+* list every impacted feature or area that should be checked after the commit
+* avoid unrelated formatting or drive-by edits mixed into feature work
+
+If a branch becomes too broad, split the work before opening the pull request.
+
+== Pull Request Expectations
+
+Detailed pull request rules, review expectations, and validation guidance are documented in `pull-request.adoc`.
+
+A pull request should:
+
+* reference the related GitHub issue for closing purposes such as `Closes #<issue-number>`
+* explain what changed
+* explain how the change has been validated through unit tests, manual testing, or other necessary means
+* mention any known limitations or follow-up work
+* be merged without creating a merge commit in order to keep the history linear
+* stay open until all review comments have been addressed
+
+Review rule:
+
+* a pull request cannot be accepted while comments are still open on it
+* every review comment should be resolved or explicitly answered before approval
+
+Merge rule:
+
+* do not use a merge commit when integrating the pull request
+* use a linear integration strategy so the branch history stays clean and easy to follow
+
+== What To Avoid
+
+To keep the history clean, avoid the following:
+
+* working directly on `main`
+* mixing several unrelated issues in one branch
+* opening pull requests without an associated issue
+* merging unreviewed code when review is expected
+* keeping feature branches alive for too long without rebasing or synchronizing with `main`
+
+== Summary
+
+The workflow is intentionally simple:
+
+1. Create or confirm the GitHub issue.
+2. Scope the issue to one plugin DLL or one core application area.
+3. Create a dedicated branch from the issue.
+4. Implement one issue per branch.
+5. Open a pull request linked to the issue.
+6. For releases, publish a tagged GitHub release with the changelog and final binary inside of the GitHub release section.
+7. Merge after review and validation has been validated.
